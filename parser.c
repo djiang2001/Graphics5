@@ -91,13 +91,44 @@ void parse_file ( char * filename,
     double xvals[4];
     double yvals[4];
     double zvals[4];
+    double w[4];
+    double h[4];
+    double d[4];
     struct matrix *tmp;
     double r;
+    double r2;
     double theta;
     char axis;
     int type;
     int step = 100;
-    if ( strncmp(line, "circle", strlen(line)) == 0 ) {
+
+    else if( strncmp(line, "clear", strlen(line)) == 0 ){
+
+      
+    } 
+ 
+    else if( strncmp(line, "box", strlen(line)) == 0 ){
+      fgets(line, sizeof(line), f); 
+      sscanf(line, "%lf %lf %lf %lf %lf %lf",
+             xvals, yvals, zvals, w, h, d);
+      add_box( edges, xvals[0], yvals[0], zvals[0], w, h, d,step);
+    } 
+    
+    else  if ( strncmp(line, "sphere", strlen(line)) == 0 ){
+      fgets(line, sizeof(line), f); 
+      sscanf(line, "%lf %lf %lf %lf",
+             xvals, yvals, zvals, &r);
+      add_sphere( edges, xvals[0], yvals[0], zvals[0], r, step);
+    }
+
+    else if( strncmp(line, "torus", strlen(line)) == 0 ){
+      fgets(line, sizeof(line), f); 
+      sscanf(line, "%lf %lf %lf %lf %lf",
+             xvals, yvals, zvals, r, r2);
+      add_torus( edges, xvals[0], yvals[0], zvals[0], r, r2, step);
+    } 
+    
+    else  if ( strncmp(line, "circle", strlen(line)) == 0 ) {
       fgets(line, sizeof(line), f);
       //printf("CIRCLE\t%s", line);
 
