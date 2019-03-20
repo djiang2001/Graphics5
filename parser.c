@@ -91,9 +91,6 @@ void parse_file ( char * filename,
     double xvals[4];
     double yvals[4];
     double zvals[4];
-    double w[4];
-    double h[4];
-    double d[4];
     struct matrix *tmp;
     double r;
     double r2;
@@ -102,16 +99,16 @@ void parse_file ( char * filename,
     int type;
     int step = 100;
 
-    else if( strncmp(line, "clear", strlen(line)) == 0 ){
-
-      
+    if( strncmp(line, "clear", strlen(line)) == 0 ){
+      free_matrix(edges);
+      edges = new_matrix(4,4);
     } 
  
     else if( strncmp(line, "box", strlen(line)) == 0 ){
       fgets(line, sizeof(line), f); 
       sscanf(line, "%lf %lf %lf %lf %lf %lf",
-             xvals, yvals, zvals, w, h, d);
-      add_box( edges, xvals[0], yvals[0], zvals[0], w, h, d,step);
+             xvals, yvals, zvals, xvals + 1, yvals + 1, zvals + 1);
+      add_box( edges, xvals[0], yvals[0], zvals[0], xvals[1], yvals[1], zvals[1]);
     } 
     
     else  if ( strncmp(line, "sphere", strlen(line)) == 0 ){
@@ -124,7 +121,7 @@ void parse_file ( char * filename,
     else if( strncmp(line, "torus", strlen(line)) == 0 ){
       fgets(line, sizeof(line), f); 
       sscanf(line, "%lf %lf %lf %lf %lf",
-             xvals, yvals, zvals, r, r2);
+             xvals, yvals, zvals, &r, &r2);
       add_torus( edges, xvals[0], yvals[0], zvals[0], r, r2, step);
     } 
     
